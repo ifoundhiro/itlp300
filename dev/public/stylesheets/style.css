@@ -1,0 +1,53 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.huskers
+{
+  text-align: left;
+  color: red;
+}
+
+.gators
+{
+  text-align: left;
+  color: green;
+}
+
+.lions
+{
+  text-align: left;
+  color: darkblue;
+}
+
+#picturesize1 img
+{
+  height: 180px;
+}
+
+#form_wrapper
+{
+    float: left;
+    margin:0 auto;
+    height:auto;
+    width: 400px;
+    padding:25x;
+    border:solid 5px whitesmoke;
+    background: whitesmoke;
+}
+
+#form_wrapper2
+{
+    float: right;
+    margin:0 auto;
+    height:auto;
+    width: 400px;
+    padding:25x;
+    border:solid 5px whitesmoke;
+    background: whitesmoke;
+}
