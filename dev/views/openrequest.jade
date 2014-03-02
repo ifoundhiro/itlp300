@@ -1,0 +1,40 @@
+doctype 5
+html
+  head
+    meta(name="viewpoint" content="width=device-width,initial-scale=1.0")
+    link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+  body
+    p 
+      button.btn.btn-info(type="button" href="#" id="poppop" rel="popover" data-trigger="hover" data-placement="bottom" data-content="Here is My 1st Popover" data-original-title="My PopOver 1:") Let's Pop:
+    p  
+      button.btn.btn-info(type="button" href="#" id="poppop2" rel="popover" data-trigger="click" data-placement="right" data-content="Here is My 2nd Popover" data-original-title="My PopOver 2:") Pop Again:
+    script
+      $('#poppop').popover();
+      $('#poppop2').popover();
+    .modal-header
+      button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+      h4.myModalLabel.modal-title
+      | Remote Modal Title 
+    .modal-body
+      p Here is one fine body.
+    .modal-footer
+      button.btn.btn-primary(type='button', data-dismiss='modal') Close 
+    .panel-group(id="accordion")
+      .panel.panel-default
+        .panel-heading
+          h4.panel-title
+            a(data-toggle="collapse" data-parent="#accordion" href="#collapse1") Collapse 1
+        .panel-collapse.collapse(id="collapse1")
+          .panel-body
+              p.lead This is all of my Collapse 1 Content.
+              p this content is very cool.
+    .panel-group(id="accordion2")
+      .panel.panel-default
+        .panel-heading
+          h4.panel-title
+            a(data-toggle="collapse" data-parent="#accordion2" href="#collapse2") Collapse 2
+        .panel-collapse.collapse.in(id="collapse2")
+          .panel-body
+              p.lead This is all of my Collapse 2 Content.
+              p this content is much better than Collapse 1.  Go Bruins!
+
