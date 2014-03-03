@@ -20,12 +20,12 @@ exports.equipmentList = function(req, res){
         //ServiceOrders.find({ CloseDate: { $exists: false } })
         .populate('_User')
         .populate('_Product')
-        .exec(function (err, equipmentlist){
-        equip.forEach(function(equipmentlist){
+        .exec(function (err, equip){
+        equip.forEach(function(equip){
         });
          //console.log(myArray)
          res.render('equipmentlist',  {
-         equiplist: equipmentlist})
+         equiplist: equip})
  });
 };
 
