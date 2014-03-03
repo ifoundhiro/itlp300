@@ -22,29 +22,30 @@ html
             span.icon-bar
             span.icon-bar
           a.navbar-brand.logo-nav(href='/customer')
+            img(src="/images/ge_logo_tiny.png")
             | GE Healthcare Service Center
-          .navbar-collapse.collapse
-            ul.nav.navbar-nav
-              li.active
-                a(href='/customer')
-                  span.glyphicon.glyphicon-home
-                  |  Home
-              li
-                a(href='/customer/create')
-                  span.glyphicon.glyphicon-wrench
-                  |  Create a Service Request
-              li.dropdown
-                a.dropdown-toggle(href='#', data-toggle='dropdown')
-                  span.glyphicon.glyphicon-eye-open
-                  |  My Equipment
-                  b.caret
-                ul.dropdown-menu
-                  li
-                    a(href='/customer/equipment') View My Equipment
-                  li
-                    a(href='/Customer/reports') View Reports
-              form.navbar-form.navbar-right(action='/logout')
-                button(type='submit' class='btn btn-default') logout
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='/customer')
+                span.glyphicon.glyphicon-home
+                |  Home
+            li
+              a(href='/customer/create')
+                span.glyphicon.glyphicon-wrench
+                |  Create a Service Request
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                span.glyphicon.glyphicon-eye-open
+                |  My Equipment
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='/customer/equipment') View My Equipment
+                li
+                  a(href='/Customer/reports') View Reports
+          form.navbar-form.navbar-right(action='/logout')
+            button(type='submit' class='btn btn-default') logout
       .container
         p
         p
