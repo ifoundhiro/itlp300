@@ -12,11 +12,13 @@ var async = require('async');
 
 var url = require('url');
 var querystring= require('querystring');
-
+// Added 3/3/2014 by Hiro: Replace hard-coded user ID 
+// with a variable.  Some user IDs: 48364, 48243, ...
+var UserID = 48243 
 
 exports.equipmentList = function(req, res){
 // Lets create an array and load it with User Data
-      Equipment.find({ _User: 48243 })
+      Equipment.find({ _User: UserID })
         //ServiceOrders.find({ CloseDate: { $exists: false } })
         .populate('_User')
         .populate('_Product')
@@ -37,7 +39,7 @@ exports.pmdetails = function(req, res){
  async.parallel([
   // Extract data for open service orders.
   function(callback){
-     ServiceOrder.find({ CloseDate: { $exists: false } })
+     ServiceOrder.find({ CloseDate: { $exists: false },_CreatedBy: UserID})
        .populate('_Equipment _Product')
        .exec(function (err, serviceorder){
          serviceorder.forEach(function(serviceorder){
@@ -49,7 +51,7 @@ exports.pmdetails = function(req, res){
    },
    // Extract data for up-coming preventative maintenance.
    function(callback){
-     Equipment.find()
+     Equipment.find({ _User: UserID })
        .populate('_Product')
        .sort('NextPMDate')
        .exec(function (err, equipment){
@@ -69,7 +71,7 @@ exports.pmdetails = function(req, res){
 
 
 exports.openrequest = function(req, res){
- ServiceOrder.find()
+ ServiceOrder.find({_CreatedBy: UserID})
    .exec(function (err, serviceorder){
      serviceorder.forEach(function(serviceorder){
      });
