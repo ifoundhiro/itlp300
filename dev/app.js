@@ -1,18 +1,15 @@
-/**
- * Module dependencies.
- */
-
-
 var express = require('express');
-var db = require('./model/db');
+var db=require('./model/db');
 var routes = require('./routes');
-//var user = require('./routes/user');
-//var helloworld = require('./routes/helloworld');
-//var userlist = require('./routes/userlist');
-var servicedetails = require('./routes/servicedetails');
+var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var moment = require('moment');
+var helloworld = require('./routes/helloworld');
+var RemoteModal = require('./routes/RemoteModal');
+
+
+
+
 var app = express();
 
 // all environments
@@ -35,15 +32,13 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/users', user.list);
+app.post('/sample', sample.echodata);
+app.get('/RemoteModal', RemoteModal.RM);
 
-//app.get('/sample', sample.presentform);
-//app.post('/sample', sample.echodata);
-
-//app.get('/userlist', userlist.list);
-
-app.get('/servicedetails',servicedetails.details);
-app.get('/openrequest',servicedetails.openrequest);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
