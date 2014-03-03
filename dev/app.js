@@ -15,7 +15,6 @@ var routes = require('./routes');
 //var bootstrap1=require('./routes/bootstrap1');
 var servicedetails = require('./routes/servicedetails');
 //var contactus = require('./routes/workshop2-contactus');
-//var contactus = require('./routes/workshop3-contactus');
 var http = require('http');
 var path = require('path');
 var moment = require('moment');
