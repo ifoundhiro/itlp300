@@ -6,7 +6,7 @@ var http = require('http');
 var path = require('path');
 var helloworld = require('./routes/helloworld');
 var RemoteModal = require('./routes/RemoteModal');
-
+var dbquery = require('./routes/dbquery');
 
 
 
@@ -35,7 +35,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/sample', sample.echodata);
 app.get('/RemoteModal', RemoteModal.RM);
-
+app.get('/customerhomepage',dbquery.pmdetails);
+app.get('/openrequest',dbquery.openrequest);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
