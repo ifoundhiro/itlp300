@@ -1,11 +1,8 @@
 var express = require('express');
 var db=require('./model/db');
 var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var helloworld = require('./routes/helloworld');
-var RemoteModal = require('./routes/RemoteModal');
 var dbquery = require('./routes/dbquery');
 
 
@@ -32,9 +29,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
-app.post('/sample', sample.echodata);
-app.get('/RemoteModal', RemoteModal.RM);
 app.get('/customerhomepage',dbquery.pmdetails);
 app.get('/openrequest',dbquery.openrequest);
 
