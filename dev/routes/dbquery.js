@@ -1,12 +1,15 @@
 var mongoose = require('mongoose');
-var Product = mongoose.model('Product');
-var User = mongoose.model('User');
 var Equipment = mongoose.model('Equipment');
-var ServiceOrders = mongoose.model('ServiceOrder');
-var Status  = mongoose.model('Status');
-var pmtype = mongoose.model('PmType');
-var priority = mongoose.model('Priority');
-var problemtype = mongoose.model('ProblemType');
+var PMType = mongoose.model('PMType');
+var Priority = mongoose.model('Priority');
+var ProblemType = mongoose.model('ProblemType');
+var Product = mongoose.model('Product');
+var ServiceOrder = mongoose.model('ServiceOrder');
+var Status = mongoose.model('Status');
+var User = mongoose.model('User');
+var async = require('async');
+
+
 var url = require('url');
 var querystring= require('querystring');
 
