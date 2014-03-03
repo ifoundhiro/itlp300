@@ -7,8 +7,7 @@ var db = require('./model/db');
 var routes = require('./routes');
 //var user = require('./routes/user');
 //var helloworld = require('./routes/helloworld');
-//var workshop1 = require('./routes/workshop1');
-//var workshop6 = require('./routes/workshop6');
+
 //var workshop7 = require('./routes/workshop7');
 //var userlist = require('./routes/userlist');
 //var userdetails = require('./routes/userdetails');
