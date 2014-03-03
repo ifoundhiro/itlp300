@@ -65,7 +65,7 @@ exports.pmdetails = function(req, res){
  ], function(err){
    if(err) return next(err);
    // Render and pass arrays to jade file.
-   res.render('customerhomepage',{openrequests: myArray, upcomingpms: myArray2});  
+   res.render('customer',{openrequests: myArray, upcomingpms: myArray2});  
  });
 };
 
