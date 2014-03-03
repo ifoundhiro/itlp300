@@ -29,7 +29,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/customerhomepage',dbquery.pmdetails);
+app.get('/customer',dbquery.pmdetails);
 app.get('/openrequest',dbquery.openrequest);
 app.get('/equipmentlist',dbquery.equipmentList);
 
