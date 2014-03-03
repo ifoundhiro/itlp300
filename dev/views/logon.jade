@@ -1,0 +1,45 @@
+doctype 5
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Login Page
+		link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+		link(rel="stylesheet" href="/stylesheets/custom.css")
+	body
+		script(src="/javascripts/jquery-2.0.3.min.js")
+		script(src="/javascripts/bootstrap.min.js")
+		.nav.navbar-default.navbar-fixed-top(role='navigation')
+			.container
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand.logo-nav(href="/customer")
+						img(src="images/GE-Logo.jpg", width='30px', height='30px')
+						|	GE Healthcare Service Center
+				.navbar-collapse.collapse
+		.container
+			.jumbotron
+				br
+				br
+				br
+				br
+				br
+		.container
+			h2.text-center User Login
+			form.form-horizontal(role='form' name='logon' id='logon' action='' method='post')
+				.form-group
+					label.col-sm-2.control-label(for='inputUsername3') Username
+					.col-sm-9
+						input#inputUsername3.form-control(name ="inputUsername" type='username', placeholder='Username')
+				.form-group
+					label.col-sm-2.control-label(for='inputPassword3') Password
+					.col-sm-9
+						input#inputPassword3.form-control(name = "inputPassword" type='password', placeholder='Password')
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						button.btn.btn-default(type='submit') Log in
+		
+
