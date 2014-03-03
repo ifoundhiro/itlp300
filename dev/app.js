@@ -4,7 +4,7 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 var dbquery = require('./routes/dbquery');
-
+var logon = require('./routes/logon');
 
 var moment = require('moment');
 var app = express();
@@ -32,6 +32,8 @@ app.get('/', routes.index);
 app.get('/customer',dbquery.pmdetails);
 app.get('/openrequest',dbquery.openrequest);
 app.get('/customer/equipmentlist',dbquery.equipmentList);
+app.get('/logon', logon.logon);
+app.post('/logon', logon.verify2);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
