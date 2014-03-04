@@ -187,4 +187,41 @@ exports.serviceorderdetails = function(req, res){
         res.render('serviceorderdetails',{serviceorder: serviceorder})})
 };
 
-
+exports.CustomerAlert = function(req, res){
+ // Define arrays to hold data to be passed to jade file.
+ var myArray=[];
+ var myArray2=[];
+ // Run parallel.
+ async.parallel([
+  // Extract data for open service orders.
+  function(callback){
+     ServiceOrder.find()
+       .populate('_Equipment _Product')
+       //.sort('ServiceOrder.CloseDate')
+       .exec(function (err, serviceorder){
+         serviceorder.forEach(function(serviceorder){
+           myArray.push(serviceorder);
+         });
+       // Callback.
+       callback();
+       });
+   },
+   // Extract data for up-coming preventative maintenance.
+   function(callback){
+     Equipment.find()
+       .populate('_Product')
+       //.sort(-'NextPMDate')
+       .exec(function (err, equipment){
+         equipment.forEach(function(equipment){
+           myArray2.push(equipment);
+         });
+       // Callback.
+       callback();
+       });     
+   }
+ ], function(err){
+   if(err) return next(err);
+   // Render and pass arrays to jade file.
+   res.render('CustomerAlert',{openrequests: myArray, PMs: myArray2});  
+ });
+};
