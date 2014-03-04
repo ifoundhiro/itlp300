@@ -37,6 +37,7 @@ app.post('/logon', dbquery.verify2);
 app.get('/engineer',dbquery.engineer);
 app.get('/invalidlogin',dbquery.invalidlogin);
 app.get('/equipdetail', dbquery.equipdetail);
+app.get('/CustomerAlert', dbquery.CustomerAlert);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
