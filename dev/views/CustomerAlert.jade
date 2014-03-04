@@ -1,0 +1,54 @@
+doctype 5
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Customer Alert
+		link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+		link(rel="stylesheet" href="/stylesheets/custom.css")
+	body
+		.modal-header
+			h4 Customer Alert
+		.container
+			.modal-body
+				.row
+					.col-xs-9
+						h5 PM Approaching within 60 Days
+						.table-condensed
+							table.table.table-condensed.table-responsive.table-bordered(width='25%')
+								thead
+									tr
+										th Equip. #
+										th Product
+										th Maintenance
+										th Next Service Date
+								tbody
+									- for PMapproach in PMs
+										if moment().day(60) > moment(PMapproach.NextPMDate) && moment() < moment(PMapproach.NextPMDate)
+											tr
+												td #{PMapproach._id}
+												td #{PMapproach._Product.ProductName}
+												td #{PMapproach.NextPMDescription}
+												td.danger #{moment(PMapproach.NextPMDate).format('dddd, MMMM Do, YYYY')}
+					.col-xs-9
+						h5 Service Orders Completed
+						.table-condensed
+							table.table.table-condensed.table-responsive.table-bordered(width='25%')
+								thead
+									tr
+										th Equip. #
+										th Open Date
+										th Closed Date
+										th Status
+								tbody
+									- for openrequest in openrequests
+										if openrequest.CurrentStatus == "Completed"
+											tr
+												td #{openrequest._Equipment._id}
+												td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
+												td #{moment(openrequest.CloseDate).format('dddd, MMMM Do, YYYY')}
+												td #{openrequest.CurrentStatus}
+		.modal-footer
+			table
+				tr
+					td
+						button(type="button" class="btn btn-default" data-dismiss="modal") Close
