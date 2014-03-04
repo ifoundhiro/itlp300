@@ -31,6 +31,40 @@ exports.equipmentList = function(req, res){
  });
 };
 
+exports.equipdetail = function(req, res){
+// Lets create an array and load it with User Data
+         var myArray= [];
+         var myArray2= [];
+         async.parallel([
+            function(callback){
+              Equipment.find({ _id: req.query.id })
+              .populate('_Product')  
+              .exec(function (err, equip){
+              equip.forEach(function(equip){
+                myArray.push(equip);
+              });
+              callback();
+            });
+            },
+            function(callback){
+               ServiceOrders.find({ _Equipment: req.query.id })
+               .sort('CurrentStatus')
+               .populate('_Equipment')
+               .populate('_Product')
+               .exec(function (err, order){
+                order.forEach(function(order){
+                myArray2.push(order);
+              });
+              callback();
+            });  
+            }
+          ], function (err){
+             res.render('equipdetail',  {
+          equipdetail: myArray, orderhistory: myArray2});
+  });
+};
+
+
 exports.customer = function(req, res){
  // Define arrays to hold data to be passed to jade file.
  var myArray=[];
