@@ -79,3 +79,62 @@ exports.openrequest = function(req, res){
    });
 };
 
+exports.logon = function(req, res){
+  	res.render('logon');
+};
+
+exports.verify2 = function(req, res){
+	User.find({UserName: req.body.inputUserame})
+	.exec(function (err, user){
+		if (user.RoleName == "Customer" && user.Password == req.session.Password)
+			{	req.session.id = user._id;
+				req.session.UserName = user.UserName;
+				req.session.Password = user.Password;
+				req.session.RoleName = user.RoleName;
+				req.session.FirstName = user.FirstName;
+				req.session.LastName = user.LastName;
+				req.session.Street = user.Street;
+				req.session.City = user.City;
+				req.session.Province = user.Province;
+				req.session.PostalCode = user.PostalCode;
+				req.session.Email = user.Email;
+				req.session.CustomerName = user.CustomerName;
+				req.session.CustomerType = user.CustomerType;
+				req.session.ContractType = user.ContractType;
+				req.session.CountryName = user.CountryName;
+				req.session.RegionName = user.RegionName;
+				req.session.Position = user.Position;
+				res.redirect('/customer')}
+		else if (user.RoleName == "Onsite Engineer" && user.Password == req.session.Password)
+			{	
+				req.session.id = user._id;
+				req.session.UserName = user.UserName;
+				req.session.Password = user.Password;
+				req.session.RoleName = user.RoleName;
+				req.session.FirstName = user.FirstName;
+				req.session.LastName = user.LastName;
+				req.session.Street = user.Street;
+				req.session.City = user.City;
+				req.session.Province = user.Province;
+				req.session.PostalCode = user.PostalCode;
+				req.session.Email = user.Email;
+				req.session.CustomerName = user.CustomerName;
+				req.session.CustomerType = user.CustomerType;
+				req.session.ContractType = user.ContractType;
+				req.session.CountryName = user.CountryName;
+				req.session.RegionName = user.RegionName;
+				req.session.Position = user.Position;
+				res.redirect('/engineer')}
+		else
+			{	res.redirect('/invalidlogin')}
+	});
+};
+
+exports.engineer = function(req, res){
+  	res.render('engineer');
+};
+
+exports.invalidlogin = function(req, res){
+  	res.render('invalidlogin');
+};
+
