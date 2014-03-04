@@ -29,11 +29,13 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/customer',dbquery.pmdetails);
+app.get('/customer',dbquery.customer);
 app.get('/openrequest',dbquery.openrequest);
 app.get('/customer/equipmentlist',dbquery.equipmentList);
-app.get('/logon', logon.logon);
-app.post('/logon', logon.verify2);
+app.get('/logon', dbquery.logon);
+app.post('/logon', dbquery.verify2);
+app.get('/engineer ',dbquery.engineer);
+app.get('/invalidlogin ',dbquery.invalidlogin);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
