@@ -5,7 +5,7 @@ html
     script(src='/javascripts/happy.methods.js')
     meta(nam='viewport' content='width=device-width, initial-scale=1.0')
     title Bootstrap 101 Template
-    link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+    link(rel='stylesheet' href='/stylesheets/customboot.css')
     link(rel="stylesheet" href="/stylesheets/customer_custom2.css")
   body
     .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
@@ -22,53 +22,52 @@ html
             span.icon-bar
             span.icon-bar
           a.navbar-brand.logo-nav(href='/customer')
-            img(src="/images/ge_logo_tiny.png")
             | GE Healthcare Service Center
-        .navbar-collapse.collapse
-          ul.nav.navbar-nav
-            li.active
-              a(href='/customer')
-                span.glyphicon.glyphicon-home
-                |  Home
-            li
-              a(href='/customer/create')
-                span.glyphicon.glyphicon-wrench
-                |  Create a Service Request
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown')
-                span.glyphicon.glyphicon-eye-open
-                |  My Equipment
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='/customer/equipmentlist') View My Equipment
-                li
-                  a(href='/Customer/reports') View Reports
-          form.navbar-form.navbar-right(action='/logout')
-            button(type='submit' class='btn btn-default') logout
-      .container
-        p
-        p
-        .table-responsive
-          table.table.table-striped.table-bordered
-            thead
-              tr
-                th.text-center Equipment ID
-                th.text-center Product Name
-                th.text-center Status
-                th.text-center Serial Number
-                th.text-center Install Date
-                th.text-center Next PM Date
-              tbody
-                -for equipment in equiplist
-                  tr
-                    td=equipment._id
-                    //  a(data-toggle='modal' href='/servicedetails?id=#{openrequest._id}' data-target='#myModal') #{openrequest._id}
-                    td=equipment._Product.ProductName
-                    td=equipment.StatusDescription                    
-                    td=equipment.SerialNumber
-                    td #{moment(equipment.InstallDate).format('MMMM, Do')}
-                    td #{moment(equipment.NextPMDate).format('MMMM, Do')}
+          .navbar-collapse.collapse
+            ul.nav.navbar-nav
+              li.active
+                a(href='/workshop9')
+                  span.glyphicon.glyphicon-home
+                  |  Home
+              li
+                a(href='/customer/create')
+                  span.glyphicon.glyphicon-wrench
+                  |  Create a Service Request
+              li.dropdown
+                a.dropdown-toggle(href='#', data-toggle='dropdown')
+                  span.glyphicon.glyphicon-eye-open
+                  |  My Equipment
+                  b.caret
+                ul.dropdown-menu
+                  li
+                    a(href='/equipmentlist') View My Equipment
+                  li
+                    a(href='/Customer/reports') View Reports
+              form.navbar-form.navbar-right(action='/logout')
+                button(type='submit' class='btn btn-default') logout
+    .container
+      h1 ---
+      h2 ---
+      .table-responsive
+        table.table.table-striped.table-bordered
+          thead
+            tr
+              th.text-center Equipment ID
+              th.text-center Product Name
+              th.text-center Status
+              th.text-center Serial Number
+              th.text-center Install Date
+              th.text-center Next PM Date
+            tbody
+              -for equipment in equiplist
+                tr
+                  td
+                    a(href='/equipdetail?id=#{equipment._id}') #{equipment._id}
+                  td=equipment._Product.ProductName
+                  td=equipment.StatusDescription                    
+                  td=equipment.SerialNumber
+                  td #{moment(equipment.InstallDate).format('MMMM, Do')}
+                  td #{moment(equipment.NextPMDate).format('MMMM, Do')}
     footer
       .container
         .row
