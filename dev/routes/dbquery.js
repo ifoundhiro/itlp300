@@ -18,7 +18,7 @@ var UserID = 48243
 
 exports.equipmentList = function(req, res){
 // Lets create an array and load it with User Data
-      Equipment.find({ _User: UserID })
+      Equipment.find({ _User: req.query.id })
         //ServiceOrders.find({ CloseDate: { $exists: false } })
         .populate('_User')
         .populate('_Product')
