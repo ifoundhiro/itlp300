@@ -31,7 +31,7 @@ exports.equipmentList = function(req, res){
  });
 };
 
-exports.pmdetails = function(req, res){
+exports.customer = function(req, res){
  // Define arrays to hold data to be passed to jade file.
  var myArray=[];
  var myArray2=[];
