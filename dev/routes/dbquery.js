@@ -172,3 +172,16 @@ exports.invalidlogin = function(req, res){
   	res.render('invalidlogin');
 };
 
+
+
+exports.serviceorderdetails = function(req, res){
+  var arg=url.parse(req.url).query; 
+  var serviceorder_id=querystring.parse(arg).id;
+  //var serviceorder_id = 411339;
+  Service.Order.find({_id: serviceorder_id})
+    .populate('_Equipment')
+    .populate('_CreatedBy')
+    .exec(function(err, serviceorderdetails){
+        res.render('serviceorderdetails',{so_detail: serviceorderdetails})})
+};
+
