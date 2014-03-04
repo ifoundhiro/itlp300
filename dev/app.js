@@ -34,8 +34,8 @@ app.get('/openrequest',dbquery.openrequest);
 app.get('/equipmentlist',dbquery.equipmentList);
 app.get('/logon', dbquery.logon);
 app.post('/logon', dbquery.verify2);
-app.get('/engineer ',dbquery.engineer);
-app.get('/invalidlogin ',dbquery.invalidlogin);
+app.get('/engineer',dbquery.engineer);
+app.get('/invalidlogin',dbquery.invalidlogin);
 app.get('/equipdetail', dbquery.equipdetail);
 
 http.createServer(app).listen(app.get('port'), function(){
