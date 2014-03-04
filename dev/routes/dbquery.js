@@ -47,7 +47,7 @@ exports.equipdetail = function(req, res){
             });
             },
             function(callback){
-               ServiceOrders.find({ _Equipment: req.query.id })
+               ServiceOrder.find({ _Equipment: req.query.id })
                .sort('CurrentStatus')
                .populate('_Equipment')
                .populate('_Product')
