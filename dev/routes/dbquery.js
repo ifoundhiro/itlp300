@@ -178,10 +178,13 @@ exports.serviceorderdetails = function(req, res){
   var arg=url.parse(req.url).query; 
   var serviceorder_id=querystring.parse(arg).id;
   //var serviceorder_id = 411339;
-  Service.Order.find({_id: serviceorder_id})
+  ServiceOrder.find({_id: serviceorder_id})
     .populate('_Equipment')
     .populate('_CreatedBy')
-    .exec(function(err, serviceorderdetails){
-        res.render('serviceorderdetails',{so_detail: serviceorderdetails})})
+    .populate('ServiceDetails._User')
+    .exec(function(err, serviceorder){
+        console.log(serviceorder[0])
+        res.render('serviceorderdetails',{serviceorder: serviceorder})})
 };
+
 
