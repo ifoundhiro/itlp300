@@ -248,8 +248,8 @@ exports.updateServiceorderdetail = function(req, res){
       .exec(function(err, serviceorder){
           serviceorder.ServiceDetails.push({
             _id: (serviceorder.ServiceDetails.length + 1),
-            //_User: req.session.user._id,
-            _User: 84714,
+            _User: req.session.user._id,
+            //_User: 84714,
             StatusDescription: 'Forward to Dispatch',
             ActionNotes: req.body.notes
             });
@@ -265,8 +265,8 @@ exports.updateServiceorderdetail = function(req, res){
       .exec(function(err, serviceorder){
           serviceorder.ServiceDetails.push({
             _id: (serviceorder.ServiceDetails.length + 1),
-            //_User: req.session.user._id,
-            _User: 84714,
+            _User: req.session.user._id,
+            //_User: 84714,
             StatusDescription: 'Accepted',
             AcceptedDate: Date.now(),
             ActionNotes: req.body.notes
@@ -285,8 +285,8 @@ exports.updateServiceorderdetail = function(req, res){
       .exec(function(err, serviceorder){
           serviceorder.ServiceDetails.push({
             _id: (serviceorder.ServiceDetails.length + 1),
-            //_User: req.session.user._id,
-            _User: 84714,
+            _User: req.session.user._id,
+            //_User: 84714,
             StatusDescription: 'Onsite',
             Checkin: Date.now(),
             ActionNotes: req.body.notes
@@ -305,8 +305,8 @@ exports.updateServiceorderdetail = function(req, res){
       .exec(function(err, serviceorder){
           serviceorder.ServiceDetails.push({
             _id: (serviceorder.ServiceDetails.length + 1),
-            //_User: req.session.user._id,
-            _User: 84714,
+            _User: req.session.user._id,
+            //_User: 84714,
             StatusDescription: 'Completed',
             Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
             Checkout: Date.now(),
