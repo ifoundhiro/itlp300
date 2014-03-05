@@ -1,0 +1,144 @@
+html
+  head
+    script(src='/javascripts/jquery-2.0.3.min.js')      
+    script(src='/javascripts/happy.js')
+    script(src='/javascripts/happy.methods.js')
+    script(src='/javascripts/bootstrap.min.js')
+    meta(nam='viewport' content='width=device-width, initial-scale=1.0')
+    title Bootstrap 101 Template
+    link(rel="stylesheet" href="/stylesheets/customboot.css")
+  body
+    .container
+      h3 Service Order Details
+      .table-responsive
+        table.table.table-striped.table-bordered
+          thead
+            tbody
+                tr
+                  td Service Order ID
+                  td=serviceorder[0]._id
+                tr
+                  td Customer 
+                  td=serviceorder[0]._CreatedBy.CustomerName
+                tr
+                  td Current Status
+                  td=serviceorder[0].CurrentStatus
+                tr                    
+                  td Priority
+                  td=serviceorder[0].PriorityDescription
+                tr                    
+                  td Problem Type
+                  td=serviceorder[0].ProblemTypeDescription
+                tr
+                  td Customer Address
+                  td=serviceorder[0]._CreatedBy.Street + " , " + serviceorder[0]._CreatedBy.City + " , " + serviceorder[0]._CreatedBy.Province
+                tr                    
+                  td Date
+                  td #{moment(serviceorder[0].Opendate).format('MMMM, Do')}
+                tr                    
+                  td Contact Name
+                  td=serviceorder[0].CustomerContactInfo.Name
+                tr
+                  td Contact Phone
+                  td=serviceorder[0].CustomerContactInfo.Phone
+                tr                    
+                  td Contact E-mail
+                  td=serviceorder[0].CustomerContactInfo.Email
+      //.container
+        p
+        p
+        h3 Service Order History 
+        .table-responsive
+          table.table.table-striped.table-bordered
+            thead
+              th ID 
+              th Status Description
+              th Updated By
+              th Assigned Date
+              th Accepted Date
+              th Check In Date
+              th Check Out Date
+              th Action Notes
+              tbody
+                -for servicedetail in serviceorder[0].ServiceDetails
+                  tr
+                    td=servicedetail._id
+                    td=servicedetail.StatusDescription
+                    if servicedetail._User.RoleName == 'Customer'
+                       td=servicedetail._User.CustomerName
+                    else
+                       td=servicedetail._User.FirstName + " " + servicedetail._User.LastName
+                    if servicedetail.AssignedDate != undefined
+                       td #{moment(servicedetail.AssignedDate).format('HH:mm, MMMM, Do')}
+                    else
+                       td
+                    if servicedetail.AcceptedDate != undefined
+                       td #{moment(servicedetail.AcceptedDate).format('HH:mm, MMMM, Do')}
+                    else
+                       td
+                    if servicedetail.Checkin != undefined
+                       td #{moment(servicedetail.Checkin).format('HH:mm, MMMM, Do')}
+                    else
+                       td
+                    if servicedetail.Checkout !=undefined
+                       td #{moment(servicedetail.Checkout).format('HH:mm, MMMM, Do')}
+                    else
+                       td
+                    td=servicedetail.ActionNotes
+      form(name='form1', id='contactus', action='', method='post')
+        .container               
+            .table-responsive
+              .col-xs-6
+                if serviceorder[0].CurrentStatus == "Assigned, Waiting to be Accepted" || serviceorder[0].CurrentStatus == "Accepted" || serviceorder[0].CurrentStatus == "Onsite"
+                  table(border='0')
+                    tr
+                      h3 Notes:
+                    tr
+                      td
+                        textarea(name='notes', id='Action notes', rows='6', cols='120')
+
+        if serviceorder[0].CurrentStatus == "Assigned, Waiting to be Accepted"
+          .modal-footer
+                      tr 
+                        td 
+                          input(type='hidden', name='service_flag', value = "1")
+                          p
+                      tr
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='accept') Accept
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='sendback') Forward to dispatch
+                        td
+                          button.btn.btn-primary(type='button', data-dismiss='modal') Close
+
+        if serviceorder[0].CurrentStatus == "Accepted" 
+          .modal-footer
+                      tr 
+                        td 
+                          input(type='hidden', name='service_flag', value = "2")
+                          p
+                      tr
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='checkin') Check in 
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='sendback') Forward to dispatch
+                        td
+                          button.btn.btn-primary(type='button', data-dismiss='modal') Close
+
+
+        if serviceorder[0].CurrentStatus == "Onsite"
+          .modal-footer
+                      tr 
+                        td 
+                          input(type='hidden', name='service_flag', value = "3")
+                          p
+                      tr
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='checkout') Check out 
+                        td
+                          button.btn.btn-primary(type='button', data-dismiss='modal') Close
+
+    //under body
+        .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+          .modal-dialog.wide-modal
+            .modal-content
