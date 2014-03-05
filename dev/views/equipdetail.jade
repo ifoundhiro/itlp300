@@ -5,6 +5,7 @@ html
     script(src='/javascripts/happy.methods.js')
     meta(nam='viewport' content='width=device-width, initial-scale=1.0')
     title Bootstrap 101 Template
+    link(rel='stylesheet' href='/stylesheets/customboot.css')
     link(rel="stylesheet" href="/stylesheets/customer_custom2.css")
   body
     .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
@@ -13,7 +14,7 @@ html
     script(src='/javascripts/jquery-2.0.3.min.js')
     script(src='/javascripts/bootstrap.min.js')
     nav.navbar-default.navbar-fixed-top(role='navigation')
-      .container
+        .container
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
             span.sr-only Toggle navigation
@@ -70,28 +71,34 @@ html
                 tr
                   td Next PM Date
                   td #{moment(equipdetail[0].NextPMDate).format('MMMM, Do')}
-      .container
-        p
-        p
-        h3 Service History
-        .table-responsive
-          table.table.table-striped.table-bordered
-            thead
-              th Order ID
-              th Problem
-              th Status
-              th Problem Note
-              th Open Date
-              th Open Date
-              tbody
-                -for order in orderhistory
-                  tr
-                    td=order._id
-                    td=order.ProblemTypeDescription
-                    td=order.CurrentStatus
-                    td=order.ProblemNotes
-                    td #{moment(order.OpenDate).format('MMMM, Do')}
-                    td #{moment(order.CloseDate).format('MMMM, Do')}
+    .container
+      p
+      p
+      .row
+        .col-xs-2
+          h3 Service History
+        .col-xs-4
+          ul.nav.nav-pills
+            li.active
+              a(data-toggle='modal' href='/newsoequip?id=#{equipdetail[0]._id}' data-target='#myModal') Create New Service Order
+      .table-responsive
+        table.table.table-striped.table-bordered
+          thead
+            th Order ID
+            th Problem
+            th Status
+            th Problem Note
+            th Open Date
+            th Open Date
+            tbody
+              -for order in orderhistory
+                tr
+                  td=order._id
+                  td=order.ProblemTypeDescription
+                  td=order.CurrentStatus
+                  td=order.ProblemNotes
+                  td #{moment(order.OpenDate).format('MMMM, Do')}
+                  td #{moment(order.CloseDate).format('MMMM, Do')}
                       
     footer
       .container
@@ -108,3 +115,4 @@ html
                 a(href='#') Privacy Policy
           .col-xs-4
             h4.text-right GE Service Portal
+
