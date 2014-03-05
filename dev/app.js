@@ -40,6 +40,9 @@ app.get('/equipdetail', dbquery.equipdetail);
 app.get('/CustomerAlert', dbquery.CustomerAlert);
 app.get('/EngineerAlert', dbquery.EngineerAlert);
 
+app.get('/engineer/serviceorder', dbquery.serviceorder);
+app.post('/engineer/serviceorder', dbquery.updateServiceorderdetail)
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
