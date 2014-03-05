@@ -237,3 +237,87 @@ exports.EngineerAlert = function(req, res){
 	  	res.render('EngineerAlert', {openrequests: myArray});
 });
 };
+
+
+
+exports.updateServiceorderdetail = function(req, res){
+  var arg=url.parse(req.url).query; 
+  var serviceorder_id=querystring.parse(arg).id;
+  if (req.body.button=='sendback'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Forward to Dispatch',
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Forward to Dispatch';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+    if (req.body.button=='accept'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Accepted',
+            AcceptedDate: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Accepted';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+
+
+    if (req.body.button=='checkin'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Onsite',
+            Checkin: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Onsite';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+
+
+    if (req.body.button=='checkout'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Completed',
+            Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
+            Checkout: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Completed';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+}
+
