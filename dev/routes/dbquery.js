@@ -225,3 +225,15 @@ exports.CustomerAlert = function(req, res){
    res.render('CustomerAlert',{openrequests: myArray, PMs: myArray2});  
  });
 };
+
+exports.EngineerAlert = function(req, res){
+	myArray = [];
+	ServiceOrder.find()
+	.populate('_CreatedBy')
+	.exec(function (err, serviceorder){
+	serviceorder.forEach(function(serviceorder){
+		myArray.push(serviceorder);
+	});
+	  	res.render('EngineerAlert', {openrequests: myArray});
+});
+};
