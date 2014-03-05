@@ -5,7 +5,7 @@ html
     script(src='/javascripts/happy.methods.js')
     meta(nam='viewport' content='width=device-width, initial-scale=1.0')
     title Bootstrap 101 Template
-    link(rel="stylesheet" href="/stylesheets/customer_custom2.css")
+    link(rel="stylesheet" href="/stylesheets/customboot.css")
   body
     script(src='/javascripts/jquery-2.0.3.min.js')
     script(src='/javascripts/bootstrap.min.js')
@@ -44,7 +44,7 @@ html
     .container
       h2 "--------------------------------------"
       h2 "--------------------------------------"
-      h3 Service Orders
+      h3 Service Order Details
       .table-responsive
         table.table.table-striped.table-bordered
           thead
@@ -79,13 +79,14 @@ html
       .container
         p
         p
-        h3 Service Order History
+        h3 Service Order History 
         .table-responsive
           table.table.table-striped.table-bordered
             thead
               th ID 
-              th Updated By
               th Status Description
+              th Updated By
+              th Assigned Date
               th Accepted Date
               th Check In Date
               th Check Out Date
@@ -94,11 +95,15 @@ html
                 -for servicedetail in serviceorder[0].ServiceDetails
                   tr
                     td=servicedetail._id
+                    td=servicedetail.StatusDescription
                     if servicedetail._User.RoleName == 'Customer'
                        td=servicedetail._User.CustomerName
                     else
                        td=servicedetail._User.FirstName + " " + servicedetail._User.LastName
-                    td=servicedetail.StatusDescription
+                    if servicedetail.AssignedDate != undefined
+                       td #{moment(servicedetail.AssignedDate).format('HH:mm, MMMM, Do')}
+                    else
+                       td
                     if servicedetail.AcceptedDate != undefined
                        td #{moment(servicedetail.AcceptedDate).format('HH:mm, MMMM, Do')}
                     else
