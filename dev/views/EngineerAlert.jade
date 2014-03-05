@@ -1,0 +1,42 @@
+doctype 5
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Engineer Alert
+		link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+		link(rel="stylesheet" href="/stylesheets/custom.css")
+	body
+		.modal-header
+			h4 Engineer Alert
+		.container
+			.modal-body
+				.row
+					.col-xs-9
+						h5 Service Order Requests
+						.table-condensed
+							table.table.table-condensed.table-responsive.table-bordered.table-striped
+								thead
+									tr
+										th Service Order #
+										th Priority
+										th Maintainence
+										th Customer
+										th
+										th
+								tbody
+									- for openrequest in openrequests
+										if openrequest.CurrentStatus == "Assigned, Waiting to be Accepted"
+											tr
+												td #{openrequest._id}
+												td #{openrequest.PriorityDescription}
+												td #{openrequest.PMDescription}
+												td #{openrequest._CreatedBy.CustomerName}
+												td
+													button(type="button" class="btn btn-success" data-dismiss="modal" name="Accept") Accept
+												td 
+													button(type="button" class="btn btn-danger" data-dismiss="modal" name="Reject") Reject
+		.modal-footer
+			table
+				tr
+					td
+						button(type="button" class="btn btn-default" data-dismiss="modal" name="Approve") Close
