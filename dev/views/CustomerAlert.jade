@@ -35,7 +35,7 @@ html
 							table.table.table-condensed.table-responsive.table-bordered.table-striped
 								thead
 									tr
-										th Equip. #
+										th Service Order #
 										th Product
 										th Open Date
 										th Part Cost
@@ -44,7 +44,7 @@ html
 									- for openrequest in openrequests
 										if openrequest.CurrentStatus == "Waiting For Customer Approval"
 											tr
-												td #{openrequest._Equipment._id}
+												td #{openrequest._id}
 												td #{openrequest._Product.ProductName}
 												td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
 												td $#{openrequest.PartCost}
@@ -56,7 +56,7 @@ html
 							table.table.table-condensed.table-responsive.table-bordered.table-striped
 								thead
 									tr
-										th Equip. #
+										th Service Order #
 										th Product
 										th Open Date
 										th Closed Date
@@ -65,7 +65,7 @@ html
 										if openrequest.CurrentStatus == "Completed"
 											if moment().day(60) > moment(openrequest.CloseDate) && moment() < moment(openrequest.CloseDate)
 											tr
-												td #{openrequest._Equipment._id}
+												td #{openrequest._id}
 												td #{openrequest._Product.ProductName}
 												td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
 												td #{moment(openrequest.CloseDate).format('dddd, MMMM Do, YYYY')}
