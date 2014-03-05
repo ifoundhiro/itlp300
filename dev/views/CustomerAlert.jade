@@ -14,7 +14,7 @@ html
 					.col-xs-9
 						h5 PM Approaching within 60 Days
 						.table-condensed
-							table.table.table-condensed.table-responsive.table-bordered(width='25%')
+							table.table.table-condensed.table-responsive.table-bordered.table-striped
 								thead
 									tr
 										th Equip. #
@@ -30,25 +30,47 @@ html
 												td #{PMapproach.NextPMDescription}
 												td.danger #{moment(PMapproach.NextPMDate).format('dddd, MMMM Do, YYYY')}
 					.col-xs-9
-						h5 Service Orders Completed
+						h5 Service Orders Waiting Customer Approval
 						.table-condensed
-							table.table.table-condensed.table-responsive.table-bordered(width='25%')
+							table.table.table-condensed.table-responsive.table-bordered.table-striped
 								thead
 									tr
 										th Equip. #
+										th Product
+										th Open Date
+										th Part Cost
+										th
+								tbody
+									- for openrequest in openrequests
+										if openrequest.CurrentStatus == "Waiting For Customer Approval"
+											tr
+												td #{openrequest._Equipment._id}
+												td #{openrequest._Product.ProductName}
+												td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
+												td $#{openrequest.PartCost}
+												td
+													button(type="button" class="btn btn-success" data-dismiss="modal" name="Approve") Approve	
+					.col-xs-9
+						h5 Service Orders Completed in Last 60 Days
+						.table-condensed
+							table.table.table-condensed.table-responsive.table-bordered.table-striped
+								thead
+									tr
+										th Equip. #
+										th Product
 										th Open Date
 										th Closed Date
-										th Status
 								tbody
 									- for openrequest in openrequests
 										if openrequest.CurrentStatus == "Completed"
+											if moment().day(60) > moment(openrequest.CloseDate) && moment() < moment(openrequest.CloseDate)
 											tr
 												td #{openrequest._Equipment._id}
+												td #{openrequest._Product.ProductName}
 												td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
 												td #{moment(openrequest.CloseDate).format('dddd, MMMM Do, YYYY')}
-												td #{openrequest.CurrentStatus}
 		.modal-footer
 			table
 				tr
 					td
-						button(type="button" class="btn btn-default" data-dismiss="modal") Close
+						button(type="button" class="btn btn-default" data-dismiss="modal" name="Approve") Close
