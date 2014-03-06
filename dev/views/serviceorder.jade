@@ -36,14 +36,8 @@ html
                   td Date
                   td #{moment(serviceorder[0].Opendate).format('MMMM, Do')}
                 tr                    
-                  td Contact Name
-                  td=serviceorder[0].CustomerContactInfo.Name
-                tr
-                  td Contact Phone
-                  td=serviceorder[0].CustomerContactInfo.Phone
-                tr                    
-                  td Contact E-mail
-                  td=serviceorder[0].CustomerContactInfo.Email
+                  td Contact 
+                  td=serviceorder[0].CustomerContactInfo.Name + ",  TEL: " + serviceorder[0].CustomerContactInfo.Phone + ",  E-Mail:  " + serviceorder[0].CustomerContactInfo.Email
       //.container
         p
         p
@@ -95,7 +89,7 @@ html
                       h3 Notes:
                     tr
                       td
-                        textarea(name='notes', id='Action notes', rows='6', cols='120')
+                        textarea(name='notes', id='Action notes', rows='2', cols='120')
 
         if serviceorder[0].CurrentStatus == "Assigned, Waiting to be Accepted"
           .modal-footer
@@ -128,15 +122,78 @@ html
 
         if serviceorder[0].CurrentStatus == "Onsite"
           .modal-footer
-                      tr 
-                        td 
-                          input(type='hidden', name='service_flag', value = "3")
-                          p
+                      tr
+                        td Onsite work status:
+                        td
+                          select(name='checkoutstatus', id='problem', required='required', value='#{checkoutstatus_code}', selected= 'True')
+                            if !checkoutstatus_code
+                              option(value='Completed') Completed
+                              option(value='Waiting for Parts')  Waiting for Parts
+                              option(value='Return Next Day') Return Next Day
+                            if checkoutstatus_code == 'Completed'
+                              option(value='Completed', selected ) Completed
+                              option(value='Waiting for Parts')  Waiting for Parts
+                              option(value='Return Next Day') Return Next Day
+                            if checkoutstatus_code == 'Waiting for Parts'
+                              option(value='Completed' ) Completed
+                              option(value='Waiting for Parts', selected)  Waiting for Parts
+                              option(value='Return Next Day') Return Next Day
+                            if checkoutstatus_code == 'Return Next Day'
+                              option(value='Completed') Completed
+                              option(value='Waiting for Parts')  Waiting for Parts
+                              option(value='Return Next Day', selected) Return Next Day
+                        td           
+                        td
+                            button.btn.btn-primary(type='submit', name='button', value='checkoutstatus') OK 
+          .modal-footer
+                    if checkoutstatus_code == 'Completed'
                       tr
                         td 
                           button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='checkout') Check out 
                         td
                           button.btn.btn-primary(type='button', data-dismiss='modal') Close
+                    if checkoutstatus_code  == 'Waiting for Parts'
+                      tr
+                        td Enter # of Parts
+                        td 
+                          input(type="number", name="number", size ='25', min="1", max="5", value = '#{number}')
+                        td 
+                        td
+                          button.btn.btn-primary(type='submit', name='button', value='number') OK
+                     if checkoutstatus_code == "Waiting for Parts" && number
+                        table(border='0')
+                          thead
+                            th Component Price
+                            th Component Description
+                            th Part Number
+                            th Quantity
+                          tbody
+                            -for (var n =  1; n <= number; n++)
+                              tr
+                                td
+                                  input(type="text", name="price#{n}", size = '20', required='required')
+                                td
+                                  input(type="text", name="description#{n}", size = '30', required='required')
+                                td
+                                  input(type="text", name="partnumber#{n}", size = '30', required='required')
+                                td
+                                  input(type="text", name="quantity#{n}" , size = '10', required='required')
+                     if checkoutstatus_code == "Waiting for Parts" && number
+                      tr
+                      tr
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='checkout') Check out 
+                        td
+                          button.btn.btn-primary(type='button', data-dismiss='modal') Close
+
+                    if checkoutstatus_code == 'Return Next Day'
+                      tr
+                        td 
+                          button.btn.btn-primary(type='submit', onclick='window.location.\'/engineer\'', name='button', value='checkout') Check out 
+                        td
+                          button.btn.btn-primary(type='button', data-dismiss='modal') Close
+
+
 
     //under body
         .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
