@@ -103,7 +103,6 @@ exports.customer = function(req, res){
  });
 };
 
-
 exports.openrequest = function(req, res){
  ServiceOrder.find({_CreatedBy: UserID})
    .exec(function (err, serviceorder){
@@ -321,3 +320,65 @@ exports.updateServiceorderdetail = function(req, res){
 
 }
 
+exports.echoCustomer = function(req, res){
+ // Define arrays to hold data to be passed to jade file.
+ var myArray=[];
+ var myArray2=[];
+ mySO = req.body.approve;
+ // Run parallel.
+ async.parallel([
+  // Extract data for open service orders.
+  function(callback){
+     ServiceOrder.find()
+       .populate('_Equipment _Product')
+       .exec(function (err, serviceorder){
+         serviceorder.forEach(function(serviceorder){
+           myArray.push(serviceorder);
+         });
+       // Callback.
+       callback();
+       });
+   },
+   // Extract data for up-coming preventative maintenance.
+   function(callback){
+     Equipment.find()
+       .populate('_Product')
+       .exec(function (err, equipment){
+         equipment.forEach(function(equipment){
+           myArray2.push(equipment);
+         });
+       // Callback.
+       callback();
+       });     
+   
+   },
+   // Extract data for up-coming preventative maintenance.
+   function(callback){
+     ServiceOrder.findById(mySO)
+            .exec(function (err, serviceorder) {
+                if(!err) {
+                    serviceorder.ServiceDetails.push({
+                        _id: (serviceorder.ServiceDetails.length + 1),
+                        _User: 123,
+                        StatusDescription: "Accepted By Customer",
+                        ApprovedDate: Date.now(90),
+                    	         });
+                    serviceorder.CurrentStatus = "Accepted By Customer";
+                    serviceorder.CloseDate = Date.now();
+                    serviceorder.save(function (err, serviceorder){
+                        if(err){
+                                  console.log('The Save Operation has failed: ', err);
+                        } else {
+                                  console.log('Service Action Saved');
+       								callback();
+       							}
+       });     
+   }
+});
+        }
+ ], function(err){
+   if(err) return next(err);
+   // Render and pass arrays to jade file.
+   res.render('customer',{openrequests: myArray, PMs: myArray2});  
+ });
+};
