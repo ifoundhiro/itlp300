@@ -38,6 +38,7 @@ app.get('/engineer',dbquery.engineer);
 app.get('/invalidlogin',dbquery.invalidlogin);
 app.get('/equipdetail', dbquery.equipdetail);
 app.post('/customer', dbquery.echoCustomer);
+app.post('/engineer', dbquery.echoEngineer);
 
 app.get('/engineer/serviceorder', dbquery.serviceorder);
 app.post('/engineer/serviceorder', dbquery.updateServiceorderdetail)
