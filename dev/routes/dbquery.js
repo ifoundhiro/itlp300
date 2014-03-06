@@ -238,88 +238,6 @@ exports.EngineerAlert = function(req, res){
 };
 
 
-
-exports.updateServiceorderdetail = function(req, res){
-  var arg=url.parse(req.url).query; 
-  var serviceorder_id=querystring.parse(arg).id;
-  if (req.body.button=='sendback'){
-    ServiceOrder.findById(serviceorder_id)
-      .exec(function(err, serviceorder){
-          serviceorder.ServiceDetails.push({
-            _id: (serviceorder.ServiceDetails.length + 1),
-            _User: req.session.user._id,
-            //_User: 84714,
-            StatusDescription: 'Forward to Dispatch',
-            ActionNotes: req.body.notes
-            });
-          serviceorder.CurrentStatus='Forward to Dispatch';
-          serviceorder.save(function(err, serviceorder){
-          res.render('/engineer')
-            })
-          })
-          }
-
-    if (req.body.button=='accept'){
-    ServiceOrder.findById(serviceorder_id)
-      .exec(function(err, serviceorder){
-          serviceorder.ServiceDetails.push({
-            _id: (serviceorder.ServiceDetails.length + 1),
-            _User: req.session.user._id,
-            //_User: 84714,
-            StatusDescription: 'Accepted',
-            AcceptedDate: Date.now(),
-            ActionNotes: req.body.notes
-            });
-          serviceorder.CurrentStatus='Accepted';
-          serviceorder.save(function(err, serviceorder){
-          res.render('/engineer')
-            })
-          })
-          }
-
-
-
-    if (req.body.button=='checkin'){
-    ServiceOrder.findById(serviceorder_id)
-      .exec(function(err, serviceorder){
-          serviceorder.ServiceDetails.push({
-            _id: (serviceorder.ServiceDetails.length + 1),
-            _User: req.session.user._id,
-            //_User: 84714,
-            StatusDescription: 'Onsite',
-            Checkin: Date.now(),
-            ActionNotes: req.body.notes
-            });
-          serviceorder.CurrentStatus='Onsite';
-          serviceorder.save(function(err, serviceorder){
-          res.render('/engineer')
-            })
-          })
-          }
-
-
-
-    if (req.body.button=='checkout'){
-    ServiceOrder.findById(serviceorder_id)
-      .exec(function(err, serviceorder){
-          serviceorder.ServiceDetails.push({
-            _id: (serviceorder.ServiceDetails.length + 1),
-            _User: req.session.user._id,
-            //_User: 84714,
-            StatusDescription: 'Completed',
-            Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
-            Checkout: Date.now(),
-            ActionNotes: req.body.notes
-            });
-          serviceorder.CurrentStatus='Completed';
-          serviceorder.save(function(err, serviceorder){
-          res.render('/engineer')
-            })
-          })
-          }
-
-}
-
 exports.echoCustomer = function(req, res){
  // Define arrays to hold data to be passed to jade file.
  var myArray=[];
@@ -446,3 +364,287 @@ exports.echoEngineer = function(req, res){
    res.render('engineer',{openrequests: myArray});  
  });
 };
+
+
+
+exports.updateServiceorderdetail = function(req, res){
+  var arg=url.parse(req.url).query; 
+  var serviceorder_id=querystring.parse(arg).id;
+  if (req.body.button=='sendback'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Forward to Dispatch',
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Forward to Dispatch';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+    if (req.body.button=='accept'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Accepted',
+            AcceptedDate: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Accepted';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+
+
+    if (req.body.button=='checkin'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Onsite',
+            Checkin: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Onsite';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          })
+          }
+
+
+
+    if (req.body.button=='checkout'){
+    ServiceOrder.findById(serviceorder_id)
+      .exec(function(err, serviceorder){
+        if  (req.body.checkoutstatus == 'Completed'){
+          serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Completed',
+            Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
+            Checkout: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Completed';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          }
+         
+          if (req.body.checkoutstatus == 'Return Next Day'){
+            serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Return Next Day',
+            Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
+            Checkout: Date.now(),
+            ActionNotes: req.body.notes
+            });
+          serviceorder.CurrentStatus='Return Next Day';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+          }
+
+          if (req.body.checkoutstatus == 'Waiting for Parts'){
+            serviceorder.ServiceDetails.push({
+            _id: (serviceorder.ServiceDetails.length + 1),
+            //_User: req.session.user._id,
+            _User: 84714,
+            StatusDescription: 'Waiting for Parts',
+            Checkin: serviceorder.ServiceDetails[serviceorder.ServiceDetails.length-1].Checkin, 
+            Checkout: Date.now(),
+            ActionNotes: req.body.notes
+            });
+            
+            if (req.body.number == 1){
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price1,
+                ComponentDescription: req.body.description1,
+                PartNumber: req.body.partnumber1,
+                Quantity: req.body.quantity1
+          });
+          }
+
+            if (req.body.number == 2){
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price1,
+                ComponentDescription: req.body.description1,
+                PartNumber: req.body.partnumber1,
+                Quantity: req.body.quantity1
+          });
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price2,
+                ComponentDescription: req.body.description2,
+                PartNumber: req.body.partnumber2,
+                Quantity: req.body.quantity2
+          });
+          }
+           
+
+            if (req.body.number == 3){
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price1,
+                ComponentDescription: req.body.description1,
+                PartNumber: req.body.partnumber1,
+                Quantity: req.body.quantity1
+          });
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price2,
+                ComponentDescription: req.body.description2,
+                PartNumber: req.body.partnumber2,
+                Quantity: req.body.quantity2
+          });
+              serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price3,
+                ComponentDescription: req.body.description3,
+                PartNumber: req.body.partnumber3,
+                Quantity: req.body.quantity3
+          });
+
+          }
+           
+
+
+
+            if (req.body.number == 4){
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price1,
+                ComponentDescription: req.body.description1,
+                PartNumber: req.body.partnumber1,
+                Quantity: req.body.quantity1
+          });
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price2,
+                ComponentDescription: req.body.description2,
+                PartNumber: req.body.partnumber2,
+                Quantity: req.body.quantity2
+          });
+              serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price3,
+                ComponentDescription: req.body.description3,
+                PartNumber: req.body.partnumber3,
+                Quantity: req.body.quantity3
+          });
+                 serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price4,
+                ComponentDescription: req.body.description4,
+                PartNumber: req.body.partnumber4,
+                Quantity: req.body.quantity4
+          });
+
+          }
+           
+
+
+            
+            if (req.body.number == 5){
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price1,
+                ComponentDescription: req.body.description1,
+                PartNumber: req.body.partnumber1,
+                Quantity: req.body.quantity1
+          });
+            serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price2,
+                ComponentDescription: req.body.description2,
+                PartNumber: req.body.partnumber2,
+                Quantity: req.body.quantity2
+          });
+              serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price3,
+                ComponentDescription: req.body.description3,
+                PartNumber: req.body.partnumber3,
+                Quantity: req.body.quantity3
+          });
+                 serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price4,
+                ComponentDescription: req.body.description4,
+                PartNumber: req.body.partnumber4,
+                Quantity: req.body.quantity4
+          });
+                serviceorder.ReplacementParts.push({
+                ComponentPrice: req.body.price5,
+                ComponentDescription: req.body.description5,
+                PartNumber: req.body.partnumber5,
+                Quantity: req.body.quantity5
+          });
+
+
+          }
+          
+
+
+
+
+          serviceorder.CurrentStatus='Waiting for Parts';
+          serviceorder.save(function(err, serviceorder){
+          res.render('/engineer')
+            })
+
+          }
+         
+          
+          
+          
+      
+      })
+          }
+
+    if (req.body.button=='checkoutstatus'){
+      var arg=url.parse(req.url).query; 
+      var serviceorder_id=querystring.parse(arg).id;
+      //var serviceorder_id = 411339;
+      ServiceOrder.find({_id: serviceorder_id})
+        .populate('_Equipment')
+        .populate('_CreatedBy')
+        .populate('ServiceDetails._User')
+        .exec(function(err, serviceorder){
+            console.log(req.body.checkoutstatus)
+            res.render('serviceorder',{serviceorder: serviceorder,
+                                       checkoutstatus_code: req.body.checkoutstatus}
+              )})
+
+    }
+
+
+    if (req.body.button=='number'){
+      var arg=url.parse(req.url).query; 
+      var serviceorder_id=querystring.parse(arg).id;
+      //var serviceorder_id = 411339;
+      ServiceOrder.find({_id: serviceorder_id})
+        .populate('_Equipment')
+        .populate('_CreatedBy')
+        .populate('ServiceDetails._User')
+        .exec(function(err, serviceorder){
+            console.log(req.body.checkoutstatus)
+            res.render('serviceorder',{serviceorder: serviceorder,
+                                       checkoutstatus_code: req.body.checkoutstatus,
+                                       number: req.body.number}
+              )})
+
+    }
+
+
+
+
+
+
+}
+
