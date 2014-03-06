@@ -382,3 +382,67 @@ exports.echoCustomer = function(req, res){
    res.render('customer',{openrequests: myArray, PMs: myArray2});  
  });
 };
+
+exports.echoEngineer = function(req, res){
+ // Define arrays to hold data to be passed to jade file.
+ var myArray=[];
+ var myAccept = req.body.approve;
+ var myReject = req.body.reject;
+ console.log(myAccept);
+ console.log(myReject);
+ // Run parallel.
+ async.parallel([
+  // Extract data for open service orders.
+  function(callback){
+  	console.log('test')
+     ServiceOrder.find()
+       .populate('_CreatedBy')
+       .exec(function (err, serviceorder){
+         serviceorder.forEach(function(serviceorder){
+           myArray.push(serviceorder);
+         });
+       // Callback.
+       callback();
+       });
+   },
+
+   function(callback){
+   	if (typeof myReject == 'undefined')
+   	{
+   	console.log('test2')
+   	ServiceOrder.findOne({_id: myAccept},
+   		function(err, serviceorder) {
+   			if(!err){
+   				serviceorder.CurrentStatus = "Accepted";
+   				serviceorder.save(function(err, serviceorder){
+   					console.log('Saved:', serviceorder);
+   				});
+   			}
+       // Callback.
+       callback();
+   		})
+   }
+   	else if (typeof myAccept == 'undefined')
+   	{
+   	console.log('test3')
+   	ServiceOrder.findOne({_id: myAccept},
+   		function(err, serviceorder) {
+   			if(!err){
+   				serviceorder.CurrentStatus = "Pending Dispatch";
+   				serviceorder.save(function(err, serviceorder){
+   					console.log('Saved:', serviceorder);
+   				});
+   			}
+       // Callback.
+       callback();
+   		})
+   }
+
+}
+  
+ ], function(err){
+   if(err) return next(err);
+   // Render and pass arrays to jade file.
+   res.render('engineer',{openrequests: myArray});  
+ });
+};
