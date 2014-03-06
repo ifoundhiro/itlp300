@@ -1,0 +1,80 @@
+doctype 5
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Customer Alert
+		link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+		link(rel="stylesheet" href="/stylesheets/custom.css")
+	body
+		script(src="/javascripts/jquery-2.0.3.min.js")
+		script(src="/javascripts/bootstrap.min.js")
+		script
+			$(".alert").alert()	
+		if login == 1
+			.container
+				.alert.alert-danger.fade.in
+					button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+					.row
+						.col-xs-12
+							strong PM Approaching within 60 Days
+							.table-condensed
+								table.table.table-condensed.table-responsive.table-bordered
+									thead
+										tr.active
+											th Equipment ID
+											th Product
+											th Maintenance
+											th Next Service Date
+									tbody
+										- for PMapproach in PMs
+											if moment().day(60) > moment(PMapproach.NextPMDate) && moment() < moment(PMapproach.NextPMDate)
+												tr.active
+													td #{PMapproach._id}
+													td #{PMapproach._Product.ProductName}
+													td #{PMapproach.NextPMDescription}
+													td #{moment(PMapproach.NextPMDate).format('dddd, MMMM Do, YYYY')}
+						.col-xs-12
+							strong Service Orders Waiting Customer Approval
+							.table-condensed
+								table.table.table-condensed.table-responsive.table-bordered
+									thead.info
+										tr.active
+											th Service Order #
+											th Product
+											th Open Date
+											th Part Cost
+											th
+									tbody
+										- for openrequest in openrequests
+											if openrequest.CurrentStatus == "Waiting For Customer Approval"
+												tr.active
+													td #{openrequest._id}
+													td #{openrequest._Product.ProductName}
+													td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
+													td $#{openrequest.PartCost}
+													td
+														form(name='customer' id='customer' action='' method='post')
+															button(type="submit" class="btn btn-success" value='#{openrequest._id}' name="approve") Approve
+															//input(type='submit' class='btn btn-success' name='approve' id='work2' value='#{openrequest._id}')
+						.col-xs-12
+							strong Service Orders Completed in Last 60 Days
+							.table-condensed
+								table.table.table-condensed.table-responsive.table-bordered
+									thead
+										tr.active
+											th Service Order #
+											th Product
+											th Open Date
+											th Closed Date
+									tbody
+										- for openrequest in openrequests
+											if openrequest.CurrentStatus == "Completed"
+												if moment().day(60) > moment(openrequest.CloseDate) && moment() < moment(openrequest.CloseDate)
+												tr.active
+													td #{openrequest._id}
+													td #{openrequest._Product.ProductName}
+													td #{moment(openrequest.OpenDate).format('dddd, MMMM Do, YYYY')}
+													td #{moment(openrequest.CloseDate).format('dddd, MMMM Do, YYYY')}
+
+
+
