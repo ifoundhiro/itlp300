@@ -1,0 +1,43 @@
+doctype 5
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title Customer Alert
+		link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+		link(rel="stylesheet" href="/stylesheets/custom.css")
+	body
+		script(src="/javascripts/jquery-2.0.3.min.js")
+		script(src="/javascripts/bootstrap.min.js")
+		script
+			$(".alert").alert()	
+		if login == 1
+			.container
+				.alert.alert-danger.fade.in
+					button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+					.row
+						.col-xs-12
+							strong Service Order Requests
+							.table-condensed
+								table.table.table-condensed.table-responsive.table-bordered
+									thead
+										tr.active
+											th Service Order #
+											th Priority
+											th Maintainence
+											th Customer
+											th
+											th
+									tbody
+										- for openrequest in openrequests
+											if openrequest.CurrentStatus == "Assigned, Waiting to be Accepted"
+												tr.active
+													td #{openrequest._id}
+													td #{openrequest.PriorityDescription}
+													td #{openrequest.PMDescription}
+													td #{openrequest._CreatedBy.CustomerName}
+													td
+														form(name='engineer' id='engineer' action='' method='post')
+															button(type="submit" class="btn btn-success" value='#{openrequest._id}' name="approve") Accept
+													td 
+														form(name='engineer' id='engineer' action='' method='post')
+															button(type="submit" class="btn btn-danger" value='#{openrequest._id}' name="reject") Reject
