@@ -1,12 +1,17 @@
+doctype 5
 html
   head
     script(src='/javascripts/jquery-2.0.3.min.js')      
     script(src='/javascripts/happy.js')
     script(src='/javascripts/happy.methods.js')
     meta(nam='viewport' content='width=device-width, initial-scale=1.0')
-    title Bootstrap 101 Template
-    link(rel="stylesheet" href="/stylesheets/customboot.css")
+    title Service Order Details
+    link(rel="stylesheet" href="/stylesheets/bootstrap.min.css")
+    link(rel="stylesheet" href="/stylesheets/style.css")
   body
+    .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+      .modal-dialog.wide-modal
+        .modal-content
     script(src='/javascripts/jquery-2.0.3.min.js')
     script(src='/javascripts/bootstrap.min.js')
     nav.navbar-default.navbar-fixed-top(role='navigation')
@@ -18,39 +23,32 @@ html
             span.icon-bar
             span.icon-bar
           a.navbar-brand.logo-nav(href='/customer')
+            img(src="/images/ge_logo_tiny.png", style='padding-right: 5px')
             | GE Healthcare Service Center
-          .navbar-collapse.collapse
-            ul.nav.navbar-nav
-              li.active
-                a(href='/workshop9')
-                  span.glyphicon.glyphicon-home
-                  |  Home
-              li
-                a(href='/customer/create')
-                  span.glyphicon.glyphicon-wrench
-                  |  Create a Service Request
-              li.dropdown
-                a.dropdown-toggle(href='#', data-toggle='dropdown')
-                  span.glyphicon.glyphicon-eye-open
-                  |  My Equipment
-                  b.caret
-                ul.dropdown-menu
-                  li
-                    a(href='/customer/equipment') View My Equipment
-                  li
-                    a(href='/Customer/reports') View Reports
-              form.navbar-form.navbar-right(action='/logout')
-                button(type='submit' class='btn btn-default') logout
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='/customer')
+                span.glyphicon.glyphicon-home
+                |  Home
+            li
+              a(href='/customer/create')
+                span.glyphicon.glyphicon-wrench
+                |  Create a Service Request
+            li
+              a(href='/customer/equipmentlist')
+                span.glyphicon.glyphicon-wrench
+                | My Equipment
+          form.navbar-form.navbar-right(action='/logon')
+            button(type='submit' class='btn btn-default') Logout
     .container
-      h2 "--------------------------------------"
-      h2 "--------------------------------------"
-      h3 Service Order Details
+      h3.header1 Service Order Details
       .table-responsive
         table.table.table-striped.table-bordered
           thead
             tbody
                 tr
-                  td Service Order ID
+                  td Service Order #
                   td=serviceorder[0]._id
                 tr
                   td Customer 
@@ -65,8 +63,8 @@ html
                   td Problem Type
                   td=serviceorder[0].ProblemTypeDescription
                 tr                    
-                  td Date
-                  td #{moment(serviceorder[0].Opendate).format('MMMM, Do')}
+                  td Open Date
+                  td #{moment(serviceorder[0].Opendate).format('MM/DD/YYYY')}
                 tr                    
                   td Contact Name
                   td=serviceorder[0].CustomerContactInfo.Name
@@ -76,66 +74,67 @@ html
                 tr                    
                   td Contact E-mail
                   td=serviceorder[0].CustomerContactInfo.Email
-      .container
-        p
-        p
-        h3 Service Order History 
-        .table-responsive
-          table.table.table-striped.table-bordered
-            thead
-              th ID 
-              th Status Description
-              th Updated By
-              th Assigned Date
-              th Accepted Date
-              th Check In Date
-              th Check Out Date
-              th Action Notes
-              tbody
-                -for servicedetail in serviceorder[0].ServiceDetails
-                  tr
-                    td=servicedetail._id
-                    td=servicedetail.StatusDescription
-                    if servicedetail._User.RoleName == 'Customer'
-                       td=servicedetail._User.CustomerName
-                    else
-                       td=servicedetail._User.FirstName + " " + servicedetail._User.LastName
-                    if servicedetail.AssignedDate != undefined
-                       td #{moment(servicedetail.AssignedDate).format('HH:mm, MMMM, Do')}
-                    else
-                       td
-                    if servicedetail.AcceptedDate != undefined
-                       td #{moment(servicedetail.AcceptedDate).format('HH:mm, MMMM, Do')}
-                    else
-                       td
-                    if servicedetail.Checkin != undefined
-                       td #{moment(servicedetail.Checkin).format('HH:mm, MMMM, Do')}
-                    else
-                       td
-                    if servicedetail.Checkout !=undefined
-                       td #{moment(servicedetail.Checkout).format('HH:mm, MMMM, Do')}
-                    else
-                       td
-                    td=servicedetail.ActionNotes
-                      
+    .container
+      h4 Equipment Detail
+      .table-responsive
+        table.table.table-striped.table-bordered
+          thead
+            tbody
+                tr
+                  td Equipment #
+                  td=serviceorder[0]._Equipment._id
+                tr
+                  td Product 
+                  td=serviceorder[0]._Product.ProductName
+                tr
+                  td Modality
+                  td=serviceorder[0]._Product.Modality
+    .container
+      p
+      p
+      h4 Service Order History 
+      .table-responsive
+        table.table.table-striped.table-bordered
+          thead
+            th Service Order #
+            th Status Description
+            th Updated By
+            th Assigned Date
+            th Accepted Date
+            th Check In Date
+            th Check Out Date
+            th Action Notes
+            tbody
+              -for servicedetail in serviceorder[0].ServiceDetails
+                tr
+                  td=servicedetail._id
+                  td=servicedetail.StatusDescription
+                  if servicedetail._User.RoleName == 'Customer'
+                     td=servicedetail._User.CustomerName
+                  else
+                     td=servicedetail._User.FirstName + " " + servicedetail._User.LastName
+                  if servicedetail.AssignedDate != undefined
+                     td #{moment(servicedetail.AssignedDate).format('HH:mm, MMMM, Do')}
+                  else
+                     td
+                  if servicedetail.AcceptedDate != undefined
+                     td #{moment(servicedetail.AcceptedDate).format('HH:mm, MMMM, Do')}
+                  else
+                     td
+                  if servicedetail.Checkin != undefined
+                     td #{moment(servicedetail.Checkin).format('HH:mm, MMMM, Do')}
+                  else
+                     td
+                  if servicedetail.Checkout !=undefined
+                     td #{moment(servicedetail.Checkout).format('HH:mm, MMMM, Do')}
+                  else
+                     td
+                  td=servicedetail.ActionNotes                      
     footer
       .container
         .row
           .col-xs-4
-            h6 2013
-          .col-xs-4
-            ul.nav.nav-pills
-              li.active
-                a(href='#') About Us
-              li
-                a(href='#') Support 24*7
-              li
-                a(href='#') Privacy Policy
-          .col-xs-4
+            © 2014
+            img(src="/images/ge_logo_tiny.png", style='padding-left: 5px')
+          .col-xs-8
             h4.text-right GE Service Portal
-
-
-//under body
-    .modal.fade(id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-      .modal-dialog.wide-modal
-        .modal-content
